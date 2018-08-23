@@ -1,0 +1,14 @@
+<aura:component >
+    <!-- Aura method-->
+    <aura:method name="sampleMethod" action="{!c.doAction}" 
+                 description="method with parameters"> 
+        <aura:attribute name="param" type="Integer" />
+    </aura:method>
+    <aura:attribute name="no_times" type="Integer" default="0"/>
+    <aura:attribute name="onclick" type="Aura.Action"/>
+    
+    <div>
+        Aura method calling {!v.no_times}
+    </div>
+    <button class="slds-button slds-button_neutral" onclick="{!v.onclick}">Call Parent Component</button>
+</aura:component>

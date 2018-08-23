@@ -1,0 +1,11 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="no_times" type="Integer" default="0"/>
+    <aura:attribute name="aura_action" type="Integer" default="0"/>
+    <div>
+        Aura Action calling {!v.aura_action}
+    </div>
+    <button class="slds-button slds-button_neutral" onclick="{!c.click}">Call Child Component</button>
+    <!-- child component -->
+    <c:cmp_AuraMethod_child  aura:id='childCmp' 
+                            onclick="{!c.parentAction}"/>
+</aura:component>
