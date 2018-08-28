@@ -1,0 +1,6 @@
+HttpRequest request = new HttpRequest();
+request.setEndpoint('callout:RestCallouts');
+request.setMethod('GET');
+Http http = new Http();
+HttpResponse response = http.send(request);
+System.debug('response::'+response.getBody());
