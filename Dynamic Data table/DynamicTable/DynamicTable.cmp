@@ -1,0 +1,106 @@
+<aura:component access="global" controller="My_pagination" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId">
+    <aura:attribute name="colData" type="List"/>
+    <aura:attribute name="fieldPath" type="List"/>
+    <aura:attribute name="rowData" type="List"/>
+    <aura:handler action="{!c.loadData}" name="init" value="{!this}"/>
+    
+    <div>
+        <div>
+            <table class="slds-table slds-table_bordered slds-table_resizable-cols slds-table_fixed-layout" role="grid">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <!-- for checkox -->
+                      <!--  <th class="slds-text-align_right" scope="col" style="width: 3.25rem;">
+                            <span class="slds-assistive-text" id="check-group-header">
+                                Choose a row
+                            </span>
+                            <div class="slds-th__action slds-th__action_form">
+                                <span class="slds-checkbox">
+                                    <input aria-labelledby="check-select-all-label check-group-header" id="checkbox-41" name="options" tabindex="-1" type="checkbox" value="checkbox-41"/>
+                                    <label class="slds-checkbox__label" for="checkbox-41" id="check-select-all-label">
+                                        <span class="slds-checkbox_faux">
+                                        </span>
+                                        <span class="slds-form-element__label slds-assistive-text">
+                                            Select All
+                                        </span>
+                                    </label>
+                                </span>
+                            </div>
+                        </th>-->
+                        <th aria-label="Actions" aria-sort="none" class="slds-is-sortable slds-is-resizable slds-text-title_caps" scope="col" style="width:6%">
+                            <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="-1">
+                                <span >
+                                    Actions
+                                </span>
+                               
+                            </a>
+                        </th>
+                        <aura:iteration items="{!v.colData}" var="obj">
+                            <c:DynamicTable_header
+                                                  colData = "{!v.colData}"
+                                                   col_fieldPath = "{!obj.fieldPath}"
+        										   rowData ="{!v.rowData}"
+                                                   colName = "{!obj.label}"
+                                                   isSortUp = "{!obj.isSortUp}"
+                                                   isSortDown = "{!obj.isSortDown}"
+                                                   byDefaultSort = "{!obj.byDefaultSort}"
+                                                   />
+                        </aura:iteration>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    
+                    
+                    <!-- <td class="slds-text-align_right" role="gridcell">
+                            <span class="slds-checkbox">
+                                <input aria-labelledby="check-button-label-01 check-group-header" id="checkbox-01" name="options" tabindex="-1" type="checkbox" value="checkbox-01"/>
+                                <label class="slds-checkbox__label" for="checkbox-01" id="check-button-label-01">
+                                    <span class="slds-checkbox_faux">
+                                    </span>
+                                    <span class="slds-form-element__label slds-assistive-text">
+                                        Select item 1
+                                    </span>
+                                </label>
+                            </span>
+                        </td> -->
+                    <aura:iteration items="{!v.rowData}" var="obj">
+                        <tr class="slds-hint-parent" >
+
+                           <td role="gridcell">
+                            <div style="display: flex; justify-content: space-around;">
+                                    <div class="slds-truncate" title="Edit" id = "{!obj.Id}" onclick="{!c.editRec}">
+                                      <lightning:icon alternativetext="Approved"  
+                                        iconName="utility:edit"   size="x-small"/>  
+                                    </div>
+
+                                    <div class="slds-truncate" title="Delete" id = "{!obj.Id}" onclick="{!c.deleteRec}">
+                                      <lightning:icon alternativetext="Approved"  
+                                        iconName="utility:delete"  size="x-small" />  
+                                    </div>
+                               </div>
+                                </td>
+                            
+                            <aura:iteration items="{!v.fieldPath}" var="objpath">
+                                
+                                <td role="gridcell">
+                                    <div class="slds-truncate" title="Acme">
+                                        <c:DynamicTable_rows 
+                                            rows  = '{!obj}'
+                                            fieldName = '{!objpath}'/>
+                                    </div>
+                                </td>
+                            </aura:iteration>
+                        </tr>
+                    </aura:iteration> 
+                   
+                </tbody>
+            </table>
+        </div>
+        <div>
+                <button type="button" class="slds-button slds-button_neutral">Cancel</button>
+                <button type="button" class="slds-button slds-button_brand">Cancel</button>
+        </div>    
+    </div>
+     <lightning:overlayLibrary aura:id="overlayLib"/>
+</aura:component>

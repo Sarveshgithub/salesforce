@@ -1,0 +1,9 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+	<!-- <aura:attribute name="rowData" type="List"/>
+	<aura:attribute name="fieldPath" type="List"/> -->
+	<aura:attribute name="rows" type="object[]"/>
+	<aura:attribute name="fieldName" type="List"/>
+    <aura:attribute name="data" type="String"/>
+	<aura:handler action="{!c.doInit}" name="init" value="{!this}"/>
+    {!v.data}
+</aura:component>

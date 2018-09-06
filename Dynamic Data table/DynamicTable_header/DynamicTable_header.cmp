@@ -1,0 +1,24 @@
+<aura:component access="global" implements="flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction">
+    <aura:attribute name="header" type="Aura.Component[]"/>
+    <aura:attribute name="colName" type="String"/>
+    <aura:attribute name="rowData" type="List"/>
+    <aura:attribute name="isSortUp" type="Boolean" default="false"/>
+    <aura:attribute name="isSortDown" type="Boolean" default="false"/>
+    <aura:attribute name="byDefaultSort" type="Boolean" default="false"/>
+    <aura:attribute name="colData" type="List" />
+    <aura:attribute name="col_fieldPath" type="String" />
+
+     			<th aria-label="{!v.colName}" aria-sort="none" class="slds-is-sortable slds-is-resizable slds-text-title_caps" scope="col">
+                    <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="-1">
+                        <span class="width_100" title="{!v.colName}" id="{!v.col_fieldPath}" onclick="{!c.sort}">
+                            {!v.colName}
+                        </span>
+                        <div class="{!if(v.byDefaultSort,'slds-show width_100 sort_icon','slds-hide width_100 sort_icon')}">
+                            <lightning:icon alternativetext="Approved"  
+                            	iconName="{!or(v.isSortDown ? 'utility:arrowdown' : '' , v.isSortUp ? 'utility:arrowup' : '')}"
+                            	 size="x-small"/>
+                            <!-- <lightning:icon alternativetext="Approved"  iconName="utility:arrowup" size="x-small"/> -->
+                        </div>
+                    </a>
+                </th> 
+</aura:component>
