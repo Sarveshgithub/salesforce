@@ -1,15 +1,16 @@
 ({
     loadData: function(cmp, evt, help) {
-        var action = cmp.get('c.fetchContact');
+        // Contact contact_field
+        let state, action, ret;
+        action = cmp.get('c.fetchContact');
         action.setParams({
-            strSObjectName: 'Contact',
-            strFieldsetName: 'contact_field'
+            strSObjectName: cmp.get('v.object'),
+            strFieldsetName: cmp.get('v.fieldSetName')
         });
         action.setCallback(this, function(response) {
-            var state = response.getState();
+            state = response.getState();
             if (state === "SUCCESS") {
-                var ret = response.getReturnValue();
-                console.log('ret>>>>>>', ret);
+                ret = response.getReturnValue();
                 this.createHeader(cmp, ret['lstFields'])
                 this.createRows(cmp, ret['lstFields'], ret['lstSObject'])
             }
@@ -23,24 +24,26 @@
             obj['fieldPath'] = e['fieldPath']
             obj['isSortUp'] = true
             obj['isSortDown'] = false
-            obj['byDefaultSort'] = e['label'] == 'Email' ? true : false
+            obj['byDefaultSort'] = e['label'] == 'Name' ? true : false
             return obj;
         })
-        console.log(orderData);
         cmp.set('v.colData', orderData);
-        //console.log('dfghjk', cmp.get('v.colData'))
     },
     createRows: function(cmp, field, row) {
-    	console.log(field);
-    	console.log(row)
-
         let filedPath = field.map(e => {
             return e['fieldPath']
-           
         })
         cmp.set('v.fieldPath', filedPath);
-        cmp.set('v.rowData', row);
-        
-        
+        cmp.set('v.allRowData', row);
+        cmp.set('v.rowData', row.splice(0, cmp.get('v.prev')));
+    },
+    toast: function(title, message, type) {
+        let toastEvent = $A.get("e.force:showToast");
+        toastEvent.setParams({
+            title: title,
+            message: message,
+            type: type,
+        });
+        toastEvent.fire();
     }
 })

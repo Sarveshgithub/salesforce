@@ -1,0 +1,5 @@
+<design:component>
+	<design:attribute name ="object" label="Object Name" required="true"/>
+    <design:attribute name ="fieldSetName" label="Field Set Name" required="true"/>
+    <design:attribute name ="prev" label="Record Per Page" required="true"/>
+</design:component>

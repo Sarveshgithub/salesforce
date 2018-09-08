@@ -17,7 +17,6 @@
                             <lightning:icon alternativetext="Approved"  
                             	iconName="{!or(v.isSortDown ? 'utility:arrowdown' : '' , v.isSortUp ? 'utility:arrowup' : '')}"
                             	 size="x-small"/>
-                            <!-- <lightning:icon alternativetext="Approved"  iconName="utility:arrowup" size="x-small"/> -->
                         </div>
                     </a>
                 </th> 

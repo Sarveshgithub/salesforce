@@ -1,6 +1,43 @@
 .THIS .width_100 {
-	width: 100%;
+    width: 100%;
 }
 .THIS .sort_icon {
-	text-align: right;
+    text-align: right;
+}
+.THIS .header {
+    margin-top: 0px;
+    padding: 1em 1em 1em 0;
+    display: flex;
+    background: #FFF;
+    justify-content: space-between;
+}
+.THIS .header_label>p {
+    padding: 0.3em 0 0 1em;
+    color: #000;
+    font-size: 2em;
+}
+.THIS .header_record {
+    text-align: right;
+    padding: 1em 1em 1em 0;
+    background: #FFF;
+}
+.THIS .footer {
+    margin-top: 0px;
+    padding: 1em 1em 1em 0;
+    display: flex;
+    background: #FFF;
+    justify-content: space-between;
+}
+.THIS .footer_btn {
+    flex: 3;
+    text-align: right;
+}
+.THIS .footer_label {
+    flex: 1;
+    text-align: left;
+}
+.THIS .footer_label>p {
+    padding: 1em 0 0 2em;
+    color: #000;
+    font-size: 1.3em;
 }
