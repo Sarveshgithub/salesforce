@@ -1,0 +1,30 @@
+<aura:component controller="cls_CurrencyConverter" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name="options" type="List"/>
+	<aura:handler action="{!c.loadCurrencyOption}" name="init" value="{!this}"/>
+	<div class="container">
+		<div class="box-1">
+			<div class="from-input">
+				<lightning:input type="number" aura:id="fromno" label="" onchange="{!c.changefrom}" step="0.01"/>
+			</div>
+			<div class="from-select">
+				<lightning:select aura:id="from" name="select1" label="" onchange="{! c.onchangeFrom }">
+		        <aura:iteration items="{!v.options}" var="option">
+		            <option text="{!option.label}" value="{!option.value}" />
+		        </aura:iteration>
+		    	</lightning:select>
+			</div>
+	    </div>
+	    <div class="box-2">
+			<div class="to-input">
+				<lightning:input type="number" aura:id="tono" label="" onchange="{!c.changeto}" step="0.01"/>
+			</div>
+			<div class="to-select">
+				<lightning:select  aura:id="to" name="select1" label="" onchange="{! c.onchangeTo }">
+		        <aura:iteration items="{!v.options}" var="option">
+		            <option text="{!option.label}" value="{!option.value}"/>
+		        </aura:iteration>
+		    	</lightning:select>
+			</div>
+		</div>
+	</div>
+</aura:component>

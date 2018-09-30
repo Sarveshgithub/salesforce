@@ -1,0 +1,22 @@
+.THIS.container{
+	/*display: flex;*/
+	/*margin: 5px;*/
+}
+.THIS .box-1{
+	display: flex;
+}
+.THIS .box-2{
+	display: flex;
+}
+.THIS .from-input {
+	flex: 1;
+}
+.THIS .from-select {
+	flex: 1;
+}
+.THIS .to-input {
+	flex: 1;
+}
+.THIS .to-select {
+	flex: 1;
+}
