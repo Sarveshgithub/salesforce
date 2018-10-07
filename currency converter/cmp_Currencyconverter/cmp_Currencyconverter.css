@@ -1,6 +1,7 @@
 .THIS.container{
 	/*display: flex;*/
 	/*margin: 5px;*/
+    padding:14px;
 }
 .THIS .box-1{
 	display: flex;
@@ -13,10 +14,19 @@
 }
 .THIS .from-select {
 	flex: 1;
+    padding-left:14px;
 }
 .THIS .to-input {
 	flex: 1;
 }
 .THIS .to-select {
 	flex: 1;
+    padding-left:14px;
+}
+.THIS .text {
+   
+    display: flex;
+     flex-flow: column;
+    justify-content: space-around;
+    align-items: end;
 }
