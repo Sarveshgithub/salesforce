@@ -1,0 +1,49 @@
+<!-- 
+    This is Data table component using lightning:datatable
+    Develop By - Sarvesh.
+    Develop Date - 23-Nov-2018
+ -->
+
+<aura:component controller="cntrl_Datatable" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+    access="global">
+
+    <!-- All the Atrributes  -->
+    <aura:attribute name="data" type="Object" />
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="keyField" type="String" default="id" />
+    <!-- <aura:attribute name="hideCheckboxColumn" type="Boolean" default="false" /> -->
+    <aura:attribute name="selectedRowsCount" type="Integer" default="0" />
+    <aura:attribute name="isLoading" type="Boolean" default="false" />
+    <aura:attribute name="resizeColumnDisabled" type="Boolean" default="false" />
+    <aura:attribute name="minColumnWidth" type="Integer" />
+    <aura:attribute name="maxColumnWidth" type="Integer" />
+    <aura:attribute name="sortedBy" type="String" />
+    <aura:attribute name="sortedDirection" type="String" />
+    <aura:attribute name="defaultSortDirection" type="String" />
+    <aura:attribute name="showRowNumberColumn" type="Boolean" default="false" />
+    <aura:attribute name="rowNumberOffset" type="Integer" default="0" />
+    <aura:attribute name="initialRows" type="Integer" default="10" />
+    <aura:attribute name="rowsToAdd" type="Integer" default="10" />
+    <aura:attribute name="dataTableSchema" type="Object" />
+    <!-- for edit -->
+    <aura:attribute name="errors" type="Object" default="[]" />
+    <aura:attribute name="draftValues" type="Object" default="[]" />
+    <!-- handlers-->
+    <aura:handler name="init" value="{! this }" action="{! c.init }" />
+
+    <lightning:datatable data="{! v.data }" 
+        columns="{! v.columns }" 
+        keyField="Id" 
+        onrowselection="{! c.selectedRow }"
+        sortedBy="{! v.sortedBy }" 
+        sortedDirection="{! v.sortedDirection }" 
+        onsort="{! c.updateColumnSorting }"
+        onrowaction="{! c.handleRowAction }" 
+        errors="{! v.errors }" 
+        draftValues="{! v.draftValues }" 
+        onsave="{!c.handleSaveEdition}" />
+        
+    <aura:if isTrue="{! v.isLoading }">
+        <lightning:spinner alternativeText="Loading" />
+    </aura:if>
+</aura:component>
