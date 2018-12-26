@@ -1,0 +1,7 @@
+<design:component label="Dynamic Lightning Datatable">
+    <design:attribute name="title" Label="Title" />
+    <design:attribute name="objectName" Label="Object API Name" />
+    <design:attribute name="lstfields" Label="Fields API Name"  />
+    <design:attribute name="FilterCriteria" Label="Filter condition"  />
+    <design:attribute name="pageSize" Label="Page Size"  />
+</design:component>
