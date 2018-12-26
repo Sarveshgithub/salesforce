@@ -1,0 +1,78 @@
+<aura:component controller="cntrl_Datatable" 
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global">
+    
+    <!-- Design the Atrributes  -->
+    <aura:attribute name="objectName" type="string" />
+    <aura:attribute name="lstfields" type="string" />
+    <aura:attribute name="FilterCriteria" type="string" />
+    <aura:attribute name="title" type="string" />
+    <aura:attribute name="pageSize" type="Integer" default="10" />
+    <!--End of Design the Atrributes  -->
+    
+    <!-- All the Atrributes  -->
+    <aura:attribute name="data" type="Object" />
+    <aura:attribute name="Alldata" type="List" />
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="keyField" type="String" default="id" />
+    <aura:attribute name="isLoading" type="Boolean" default="false" />   
+    <aura:attribute name="sortedBy" type="String" />
+    <aura:attribute name="sortedDirection" type="String" />
+    <aura:attribute name="start" type="Integer" default="0" />
+    <aura:attribute name="end" type="Integer" />
+    <aura:attribute name="currentPage" type="Integer" />
+    <aura:attribute name="totalPages" type="Integer" />
+    <!-- for edit -->
+    <aura:attribute name="errors" type="Object" default="[]" />
+    <aura:attribute name="draftValues" type="Object" default="[]" />
+    <!-- handlers-->
+    <aura:handler name="init" value="{! this }" action="{! c.init }" />
+    <aura:handler event="force:refreshView" action="{!c.init}" />
+    <aura:handler event="force:showToast" action="{! c.init}" />
+    
+    <div class="bkgrnd" style="background-color:white;">
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <lightning:icon iconName="action:add_contact" alternativeText="SobjectIcon" size="small"/>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span class="slds-page-header__title slds-truncate" title="{!v.title}">
+                                            {!v.title}
+                                        </span>
+                                    </h1>                                    
+                                </div>
+                                <lightning:button variant="neutral" label="New" title="New Record" onclick="{! c.newRecord }"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <lightning:datatable data="{! v.data }" 
+                             columns="{! v.columns }" 
+                             keyField="Id"                          
+                             sortedBy="{! v.sortedBy }" 
+                             sortedDirection="{! v.sortedDirection }" 
+                             onsort="{! c.updateColumnSorting }"
+                             hideCheckboxColumn="true"                         
+                             onrowaction="{! c.handleRowAction }" />
+        
+        <aura:if isTrue="{! v.isLoading }">
+            <lightning:spinner alternativeText="Loading" />
+        </aura:if>
+        <div >
+            {!v.currentPage} of {!v.totalPages} Pages
+            <lightning:button aura:id="First" variant="neutral" label="First"  onclick="{! c.pagination }" disabled="{!v.start == 0 ? true : false}"/>
+            <lightning:button aura:id="Previous" variant="neutral" label="Previous" onclick="{! c.pagination }" disabled="{!v.start == 0 ? true : false}"/>
+            <lightning:button aura:id="Next" variant="neutral" label="Next" onclick="{! c.pagination }" disabled="{!v.currentPage == v.totalPages ? true : false}"/>
+            
+            <lightning:button aura:id="Last" variant="neutral" label="Last" onclick="{! c.pagination }" disabled="{!v.currentPage == v.totalPages ? true : false}"/>
+        </div>
+    </div>
+</aura:component>
