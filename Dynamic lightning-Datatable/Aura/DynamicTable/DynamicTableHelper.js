@@ -4,17 +4,23 @@
         let methodName = 'c.loadData', 
             cols = [],
             rows= [],
+            isRelLst = cmp.get('v.isRelatedList') != undefined || cmp.get('v.isRelatedList') != null || cmp.get('v.isRelatedList') != '' ? true : false,
             params = { 'objectAPIName': cmp.get('v.objectName'),
                       'lstFields': cmp.get('v.lstfields'),
-                      'filterCriteria' : cmp.get('v.FilterCriteria')
+                      'filterCriteria' : cmp.get('v.FilterCriteria'),
+                      'isRelatedList' : isRelLst,
+                      'RelatedListFieldAPI' : cmp.get('v.RelatedListFieldAPI'),
+                      'recID' :cmp.get('v.recordId')
                      },
             callbackRess = (response) => {
                 if (response) {
                     cols = response.lstFields;
                     rows = response.lstSObject;
-                	
+                	console.log('cols-->',cols);
+                	console.log('rows--->',rows);
                     rows = this.addRowAttribute(cmp, event, help, rows, cols, response.baseURL);
                     cols = this.addColumnAttribute(cmp, event, help, cols);
+                	if(cmp.get('v.isRowAction'))
                     cols.push({ type: 'action', typeAttributes: { rowActions: this.rowAction(cmp, evt, help) } });
                     cmp.set('v.columns', cols);    
                     cmp.set('v.Alldata', rows);
@@ -28,37 +34,83 @@
     
     // This method used for add additional parameter into the columns
     addColumnAttribute: function (cmp, event, help, cols) {
-        cols.map(col => {
+       /* cols.map(col => {
             col['type'] == 'url' ? col['typeAttributes'] = {label:{fieldName: col['fieldName']  } } : '';
             col['fieldName'] = col['type'] == 'url' ? col['fieldName']+'Url' : col['fieldName'];             
         });
         return cols;
+        */
+        cols.map(col => {
+			col['fieldName'] == 'Name' ? col['type'] = 'url' : '' ;
+			col['isRef'] ? col['type'] = 'url' : '' ;
+			col['isRef'] ? col['fieldName'] = col['lkupRelName'] : '' ;
+            col['type'] == 'url' ? col['typeAttributes'] = {label:{fieldName: col['fieldName']  } } : '';
+            col['fieldName'] = col['type'] == 'url' ? col['fieldName']+'Url' : col['fieldName']; 
+            col['type'] = col['type'].toLowerCase();
+        	col['sortable'] = true;
+        	col['type']  == 'double' ? col['type'] = 'number' : '';
+        });
+        return cols;
     },
 	addRowAttribute : function (cmp, event, help, rows, cols, baseUrl) {
-       
         rows.map(row => {
             for(let i=0; i<cols.length; i++){
                
                 let fldName = cols[i].fieldName;
+            
                 if(fldName == 'Name'){
                     row[fldName+'Url'] = baseUrl+'/lightning/r/sObject/'+row['Id']+'/view';
-            	} 
-                if(fldName.includes('.')){
-              
-                    let temp =[];
-                    temp = cols[i].fieldName.split('.');
+            	}
+                 
+				if(cols[i].isRef == true){
+					fldName = cols[i].lkupRelName;
+            		//console.log(' -->',fldName);
+				}
+                if(fldName.includes('.') && cols[i].isRef){
+                  /*  let temp =[];
+                    temp = fldName.split('.');
                     let value = row;
                     value = value[temp[0]];
             		if(value != undefined && value != null && value != ''){
-                    	row[cols[i].fieldName+'Url'] = baseUrl+'/lightning/r/sObject/'+value['Id']+'/view';
+                    	row[fldName+'Url'] = baseUrl+'/lightning/r/sObject/'+value['Id']+'/view';
                     	value = value[temp[1]];
-                    	row[cols[i].fieldName] = value;
+                    	row[fldName] = value;
                     }
+                    */
+                    let temp =[];
+                    temp = fldName.split('.');
+                    let value = row;
+                    for(let k=0; k< temp.length;k++){
+                        if(value != undefined && value != null && value != ''){                        	
+                            if(k == (temp.length - 1)){
+                                row[fldName+'Url'] = baseUrl+'/lightning/r/sObject/'+value['Id']+'/view';
+                                value = value[this.capitalizeFirstLetter(cmp, event,temp[k])];
+                                row[fldName] = value;
+                            }else{
+                               value = value[this.capitalizeFirstLetter(cmp, event,temp[k])]; 
+                            }
+                        }
+                    }
+                }else if(fldName.includes('.') && cols[i].isRef == false){
+                    let temp =[], value = row;
+                    temp = fldName.split('.');
+                   	value = value[this.capitalizeFirstLetter(cmp, event, temp[0])];
+                    console.log('value-->',value,'field-->',this.capitalizeFirstLetter(cmp, event, temp[0]));
+                    if(value != undefined && value != null && value != ''){
+                        value = value[this.capitalizeFirstLetter(cmp, event, temp[1])];
+                    	row[fldName] = value;
+                        console.log('value-->',value,'field-->',this.capitalizeFirstLetter(cmp, event, temp[1]));
+                    }
+                    
                 }
+        
         	}
 		});
 		return rows;
 	},
+    capitalizeFirstLetter : function(cmp, event, str){
+    	return str[0].toUpperCase() + str.slice(1);
+    },
     // This function is for calling Apex method and return results
     callApexMethod: function (cmp, methodName, params, callbackRess) {
         
@@ -73,15 +125,12 @@
             else if (state === 'ERROR') {
                 let errors = response.getError();
                 if (errors) {
-                    
-                    cmp.set('v.errors', {
-                        table: {
-                            title: 'Your entry cannot be saved. Fix the errors and try again.',
-                            messages: [
-                                errors[0].message
-                            ]
-                        }
-                    });
+                    let message = 'Unknown error'; // Default error message
+                    // Retrieve the error message sent by the server
+                    if (errors && Array.isArray(errors) && errors.length > 0) {
+                        message = errors[0].message;
+                        this.showToast('Error!!', message, 'error');
+                    }
                 }
             }
         });
@@ -101,6 +150,9 @@
 	sortData: function (cmp, fieldName, sortDirection) {
         var data = cmp.get("v.data");
         var reverse = sortDirection !== 'asc';
+        if(fieldName.includes('Url')){ 
+             fieldName = fieldName.slice(0,-3);
+        }
         
         data = Object.assign([],
                              data.sort(this.sortBy(fieldName, reverse ? -1 : 1))
@@ -120,8 +172,8 @@
         };
     },
                     
-                    // This method is used for delete the record from row action
-	removeBook: function (cmp, row) {
+    // This method is used for delete the record from row action
+	deleteRec: function (cmp, row) {
         let rows = cmp.get('v.data'),
             rowIndex = rows.indexOf(row),
             methodName = 'c.deleteRecord',
@@ -177,18 +229,15 @@
         }
 	},
     addData : function(cmp, evt, start, end){
-        console.log('set  page rec');
 		let AllData = cmp.get('v.Alldata'),
             pageSize = cmp.get('v.pageSize');
        	let pageData = AllData.slice(start, end);
         cmp.set('v.data',pageData);
         cmp.set('v.start', start);
         cmp.set('v.end', end);
-        cmp.set('v.currentPage',parseInt(end) / parseInt(pageSize));     
-        console.log('set  page rec');
+        cmp.set('v.currentPage',parseInt(end) / parseInt(pageSize));
     },
     countTotalPages : function(cmp, evt){
-        console.log('count page');
 		let AllData = cmp.get('v.Alldata'),
             pageSize = cmp.get('v.pageSize');
         let totalPage = AllData.length / pageSize;

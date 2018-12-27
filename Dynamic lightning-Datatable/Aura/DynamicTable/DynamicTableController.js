@@ -25,7 +25,7 @@
                 helper.EditRowId(cmp, row);
                 break;
             case 'delete':
-                helper.removeBook(cmp, row)
+                helper.deleteRec(cmp, row)
                 break;
         }
     },
