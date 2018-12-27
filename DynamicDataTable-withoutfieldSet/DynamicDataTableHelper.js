@@ -4,17 +4,23 @@
         let methodName = 'c.loadData', 
             cols = [],
             rows= [],
+            isRelLst = cmp.get('v.isRelatedList') != undefined || cmp.get('v.isRelatedList') != null || cmp.get('v.isRelatedList') != '' ? true : false,
             params = { 'objectAPIName': cmp.get('v.objectName'),
                       'lstFields': cmp.get('v.lstfields'),
-                      'filterCriteria' : cmp.get('v.FilterCriteria')
+                      'filterCriteria' : cmp.get('v.FilterCriteria'),
+                      'isRelatedList' : isRelLst,
+                      'RelatedListFieldAPI' : cmp.get('v.RelatedListFieldAPI'),
+                      'recID' :cmp.get('v.recordId')
                      },
             callbackRess = (response) => {
                 if (response) {
                     cols = response.lstFields;
                     rows = response.lstSObject;
-                	
+                	console.log('cols-->',cols);
+                	console.log('rows--->',rows);
                     rows = this.addRowAttribute(cmp, event, help, rows, cols, response.baseURL);
                     cols = this.addColumnAttribute(cmp, event, help, cols);
+                	if(cmp.get('v.isRowAction'))
                     cols.push({ type: 'action', typeAttributes: { rowActions: this.rowAction(cmp, evt, help) } });
                     cmp.set('v.columns', cols);    
                     cmp.set('v.Alldata', rows);
@@ -28,37 +34,66 @@
     
     // This method used for add additional parameter into the columns
     addColumnAttribute: function (cmp, event, help, cols) {
-        cols.map(col => {
+       /* cols.map(col => {
             col['type'] == 'url' ? col['typeAttributes'] = {label:{fieldName: col['fieldName']  } } : '';
             col['fieldName'] = col['type'] == 'url' ? col['fieldName']+'Url' : col['fieldName'];             
         });
         return cols;
+        */
+        cols.map(col => {
+			col['fieldName'] == 'Name' ? col['type'] = 'url' : '' ;
+			col['isRef'] ? col['type'] = 'url' : '' ;
+			col['isRef'] ? col['fieldName'] = col['lkupRelName'] : '' ;
+            col['type'] == 'url' ? col['typeAttributes'] = {label:{fieldName: col['fieldName']  } } : '';
+            col['fieldName'] = col['type'] == 'url' ? col['fieldName']+'Url' : col['fieldName']; 
+            col['type'] = col['type'].toLowerCase();
+        	col['sortable'] = true;
+        	col['type']  == 'double' ? col['type'] = 'number' : '';
+        });
+        return cols;
     },
 	addRowAttribute : function (cmp, event, help, rows, cols, baseUrl) {
-       
         rows.map(row => {
             for(let i=0; i<cols.length; i++){
                
                 let fldName = cols[i].fieldName;
+            
                 if(fldName == 'Name'){
                     row[fldName+'Url'] = baseUrl+'/lightning/r/sObject/'+row['Id']+'/view';
-            	} 
-                if(fldName.includes('.')){
+            	}
+                 
+				if(cols[i].isRef == true){
+					fldName = cols[i].lkupRelName;
+            		//console.log(' -->',fldName);
+				}
+                if(fldName.includes('.') && cols[i].isRef){
               
                     let temp =[];
-                    temp = cols[i].fieldName.split('.');
+                    temp = fldName.split('.');
                     let value = row;
                     value = value[temp[0]];
             		if(value != undefined && value != null && value != ''){
-                    	row[cols[i].fieldName+'Url'] = baseUrl+'/lightning/r/sObject/'+value['Id']+'/view';
+                    	row[fldName+'Url'] = baseUrl+'/lightning/r/sObject/'+value['Id']+'/view';
                     	value = value[temp[1]];
-                    	row[cols[i].fieldName] = value;
+                    	row[fldName] = value;
+                    }
+                }else if(fldName.includes('.') && cols[i].isRef == false){
+                    let temp =[], value = row;
+                    temp = fldName.split('.');
+                   	value = value[this.capitalizeFirstLetter(cmp, event, temp[0])];
+                    if(value != undefined && value != null && value != ''){
+                        value = value[this.capitalizeFirstLetter(cmp, event, temp[1])];
+                    	row[fldName] = value;
                     }
                 }
+        
         	}
 		});
 		return rows;
 	},
+    capitalizeFirstLetter : function(cmp, event, str){
+    	return str[0].toUpperCase() + str.slice(1);
+    },
     // This function is for calling Apex method and return results
     callApexMethod: function (cmp, methodName, params, callbackRess) {
         
