@@ -41,4 +41,11 @@
          var whichBtn = evt.getSource().getLocalId();
         helper.pagiHandler(cmp, evt,  whichBtn);
     },
+    handleReferesh : function (cmp, evt, helper) {
+        let typeEvt = evt.getParam("type");
+        if(typeEvt != '' && typeEvt != undefined && typeEvt.tolowercase() != 'error' ){
+             help.loadDataHelp(cmp, evt, helper);
+        }
+        
+    }
 })

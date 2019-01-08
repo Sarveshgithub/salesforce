@@ -62,18 +62,7 @@ public  class cntrl_Datatable {
         }
     }
     
-    @AuraEnabled
-    public static Boolean updateRecords(String updateRecs) {
-        List<Contact> contact = (List<Contact>)JSON.deserialize(updateRecs, List<Contact>.Class);
-        
-        try {
-            update contact;
-            return true;
-        } catch(Exception e) {
-            throw new AuraHandledException(e.getMessage());
-        }
-    }
-    
+  
     @AuraEnabled
     public static ResultWrapper loadData(String objectAPIName, String lstFields, String filterCriteria, Boolean isRelatedList, String RelatedListFieldAPI, String recID) {
         
@@ -112,7 +101,7 @@ public  class cntrl_Datatable {
             finalQuery += finalQuery.contains('WHERE') ? ' AND '+RelatedListFieldAPI+ ' =\''+recID+'\'' : ' WHERE '+RelatedListFieldAPI + ' =\''+recID+'\'';
         }
         finalQuery += ' LIMIT 1000';
-        System.debug('final---> '+finalQuery);
+        //System.debug('final---> '+finalQuery);
         list<sObject> records = Database.query(finalQuery);
         String baseURL = URL.getSalesforceBaseUrl().toExternalForm();
         return new ResultWrapper(records, lstWrapfields, baseURL);

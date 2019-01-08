@@ -31,8 +31,8 @@
     <aura:attribute name="draftValues" type="Object" default="[]" />
     <!-- handlers-->
     <aura:handler name="init" value="{! this }" action="{! c.init }" />
-   <!-- <aura:handler event="force:refreshView" action="{!c.init}" />
-    <aura:handler event="force:showToast" action="{! c.init}" />  -->
+    <aura:handler event="force:refreshView" action="{!c.init}" />
+    <aura:handler event="force:showToast" action="{! c.handleReferesh}" /> 
     
     <lightning:card variant="Narrow" title="{!v.title}" iconName="{!v.titleIcon}" >
         <aura:set attribute="actions">

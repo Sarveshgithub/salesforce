@@ -16,8 +16,8 @@
                 if (response) {
                     cols = response.lstFields;
                     rows = response.lstSObject;
-                	console.log('cols-->',cols);
-                	console.log('rows--->',rows);
+                	//console.log('cols-->',cols);
+                	//console.log('rows--->',rows);
                     rows = this.addRowAttribute(cmp, event, help, rows, cols, response.baseURL);
                     cols = this.addColumnAttribute(cmp, event, help, cols);
                 	if(cmp.get('v.isRowAction'))
@@ -31,15 +31,9 @@
  			} 
  			this.callApexMethod(cmp, methodName, params, callbackRess);
 	},
-    
     // This method used for add additional parameter into the columns
     addColumnAttribute: function (cmp, event, help, cols) {
-       /* cols.map(col => {
-            col['type'] == 'url' ? col['typeAttributes'] = {label:{fieldName: col['fieldName']  } } : '';
-            col['fieldName'] = col['type'] == 'url' ? col['fieldName']+'Url' : col['fieldName'];             
-        });
-        return cols;
-        */
+       
         cols.map(col => {
 			col['fieldName'] == 'Name' ? col['type'] = 'url' : '' ;
 			col['isRef'] ? col['type'] = 'url' : '' ;
@@ -67,16 +61,7 @@
             		//console.log(' -->',fldName);
 				}
                 if(fldName.includes('.') && cols[i].isRef){
-                  /*  let temp =[];
-                    temp = fldName.split('.');
-                    let value = row;
-                    value = value[temp[0]];
-            		if(value != undefined && value != null && value != ''){
-                    	row[fldName+'Url'] = baseUrl+'/lightning/r/sObject/'+value['Id']+'/view';
-                    	value = value[temp[1]];
-                    	row[fldName] = value;
-                    }
-                    */
+                  
                     let temp =[];
                     temp = fldName.split('.');
                     let value = row;
@@ -95,11 +80,11 @@
                     let temp =[], value = row;
                     temp = fldName.split('.');
                    	value = value[this.capitalizeFirstLetter(cmp, event, temp[0])];
-                    console.log('value-->',value,'field-->',this.capitalizeFirstLetter(cmp, event, temp[0]));
+                    //console.log('value-->',value,'field-->',this.capitalizeFirstLetter(cmp, event, temp[0]));
                     if(value != undefined && value != null && value != ''){
                         value = value[this.capitalizeFirstLetter(cmp, event, temp[1])];
                     	row[fldName] = value;
-                        console.log('value-->',value,'field-->',this.capitalizeFirstLetter(cmp, event, temp[1]));
+                        //console.log('value-->',value,'field-->',this.capitalizeFirstLetter(cmp, event, temp[1]));
                     }
                     
                 }
