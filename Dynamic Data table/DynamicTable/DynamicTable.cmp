@@ -2,6 +2,7 @@
     <!-- all attributes -->
     <aura:attribute name="object" type="String"/>
     <aura:attribute name="fieldSetName" type="String"/>
+    <aura:attribute name="filter" type="String" default="Name Like 'J%'"/>
     <aura:attribute name="colData" type="List"/>
     <aura:attribute name="fieldPath" type="List"/>
     <aura:attribute name="rowData" type="List"/>
