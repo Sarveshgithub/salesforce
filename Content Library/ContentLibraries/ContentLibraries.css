@@ -1,0 +1,43 @@
+.THIS.lib_container{
+    border: 1px solid darkgrey;
+    border-radius: 5px;
+    padding: 10px;
+    background:#FFF;
+    position: relative;
+}
+.THIS .nav{
+    display:flex;
+    font-size: 9px;
+    align-items: center;
+}
+
+.THIS .nav_label{
+    flex-grow: 1;
+}
+.THIS .nav_label > h1{
+    font-size: 25px;
+}
+.THIS .main >*{
+    font-size:10px;
+    margin-top: 5px;
+}
+.THIS .table_heading{
+    box-sizing: border-box;
+    display: block;
+    font-size: 17px;
+}
+.THIS .main_relatedList{
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 5px;
+}
+.THIS .main_unrelatedList{
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 5px;
+}
+.THIS .nav_search{
+    margin: 0px 5px;
+}

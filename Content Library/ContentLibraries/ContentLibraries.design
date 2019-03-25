@@ -1,0 +1,4 @@
+<design:component >
+    <design:attribute name="disabled" Label="Disable the Upload button ?" default="false" />
+    <design:attribute name="strfields" Label="colums Name" />    
+</design:component>

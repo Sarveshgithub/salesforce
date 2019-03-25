@@ -1,0 +1,90 @@
+<aura:component controller="ContentLibraryController"
+    implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+    access="global">
+    <!--Data table Attribute-->
+    <aura:attribute name="data" type="Object" default="null" />
+    <aura:attribute name="rel_columns" type="List" />
+    <aura:attribute name="non_columns" type="List" />
+    <aura:attribute name="ListcontentRelated" type="List" />
+    <aura:attribute name="ListcontentNotRelated" type="List" />
+    <aura:attribute name="temp_ListcontentRelated" type="List" />
+    <aura:attribute name="temp_ListcontentNotRelated" type="List" />
+    <!--End Data table Attribute-->
+    <!-- Parent component -->
+    <aura:attribute name="options" type="List" />
+    <aura:attribute name="accept" type="List" default="['.jpg', '.jpeg']" />
+    <aura:attribute name="multiple" type="Boolean" default="true" />
+    <aura:attribute name="disabled" type="Boolean" default="false" />
+    <!-- -->
+    <aura:attribute name="lstFiles" type="list" />
+    <aura:attribute name="ListLibrary" type="List" />
+    <!-- for spinner -->
+    <aura:attribute name="showSpiner" type="Boolean" default="false" />
+    <!-- end for spinner -->
+    <aura:attribute name="strfields" type="string" />
+    <aura:attribute name="selectdLibrary" type="String" />
+    <aura:attribute name="listFields" type="ContentLibraryController.wrapperReturn" />
+
+    <aura:handler name="init" value="{! this }" action="{! c.init }" />
+
+
+    <!-- App Container-->
+    <div class="lib_container">
+        <aura:if isTrue="{!v.showSpiner}">
+            <lightning:spinner aura:id="spinner" alternativeText="Loading" size="small" />
+        </aura:if>
+        <!-- Header Part-->
+        <div class="nav">
+            <div class="nav_label">
+                <h1>Content Library <lightning:buttonIcon iconName="utility:refresh" variant="bare" onclick="{! c.init }" alternativeText="Settings" /></h1>
+            </div>
+            <div class="nav_options">
+                <lightning:combobox aura:id="objName" value="{!v.selectdLibrary}" label="Select Folder" options="{! v.options }"
+                    onchange="{!c.handleChange}" />
+            </div>
+            <div class="nav_search">
+                <lightning:input name="search" label="Search" placeholder="Search" onchange="{!c.searchRecords}" />
+            </div>
+            <div class="nav_upload">
+                <lightning:fileUpload name="fileUploader" label="Upload" multiple="{!v.multiple}"
+                    accept="{!v.accept}" disabled="{!v.disabled}" recordId="{!v.recordId}"
+                    onuploadfinished="{! c.handleUploadFinished }" hideNewbtn="true" />
+            </div>
+        </div>
+        <!-- Main Part -->
+        <div class="main_relatedList">
+            <span class="table_heading">
+                Related Documents
+            </span>
+            <aura:if isTrue="{!v.ListcontentRelated.length > 0 }">
+                <div>
+                    <lightning:datatable keyField="Id" data="{! v.ListcontentRelated }" columns="{! v.rel_columns }"
+                        onrowaction="{! c.handleRowAction }" resizeColumnDisabled="true" hideCheckboxColumn="true"
+                        showRowNumberColumn="true" />
+                </div>
+                <aura:set attribute="else">
+                    <div>
+                        <span>No Related Records found on this folder</span>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </div>
+        <div class="main_unrelatedList">
+            <span class="table_heading">
+                Unrelated Documents
+            </span>
+            <aura:if isTrue="{!v.ListcontentNotRelated.length > 0 }">
+                <div>
+                    <lightning:datatable keyField="Id" data="{! v.ListcontentNotRelated }" columns="{! v.non_columns }"
+                        onrowaction="{! c.handleRowAction }" resizeColumnDisabled="true" hideCheckboxColumn="true"
+                        showRowNumberColumn="true" />
+                </div>
+                <aura:set attribute="else">
+                    <div stye="{!v.ListcontentNotRelated.length > 0 ? 'display:none' : ''}">
+                        <span>No UnRelated Records found on this folder</span>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </div>
+    </div>
+</aura:component>
