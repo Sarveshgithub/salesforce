@@ -1,0 +1,12 @@
+.THIS .content_container_header{
+    display: flex;
+    align-items: flex-end;
+}
+.THIS .search_input{
+    flex:1;
+    margin-right: 5px;
+}
+.THIS .slds-modal__container {
+    max-width: 80rem;
+    min-width: 60rem;
+}

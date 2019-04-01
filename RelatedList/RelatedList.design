@@ -1,0 +1,10 @@
+<design:component label="Dynamic Lightning Datatable">
+    <design:attribute name="title" Label="Title" />
+    <design:attribute name="titleIcon" label="Title Icon Name" />
+    <design:attribute name="objectName" Label="Object API Name" />
+    <design:attribute name="lstfields" Label="Fields API Name"  />
+    <design:attribute name="FilterCriteria" Label="Filter condition"  />
+    <design:attribute name="isRowAction" Default="true" Label="Edit/Delete Action"/>
+    <design:attribute name="pageSize" Label="Page Size"  />
+    <design:attribute name="RelatedListFieldAPI" Label="RelatedList Field API"  description="Related lookup field Api Name ex AccountId for Contact"/>
+</design:component>
