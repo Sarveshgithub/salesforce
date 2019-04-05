@@ -29,7 +29,6 @@
     <!-- for edit -->
     <!-- Add Records Attributes -->
     <aura:attribute name="showModal" type="Boolean" default="false" />
-    <aura:attribute name="searchKeywork" type="String" />
     <!-- end Attributes -->
     <aura:attribute name="errors" type="Object" default="[]" />
     <aura:attribute name="draftValues" type="Object" default="[]" />
@@ -79,11 +78,10 @@
                         <div class="content_container">
                             <div class="content_container_header">
                                 <div class="search_input">
-                                    <lightning:input name="search" label="Search" placeholder="Search" onchange="{!c.getText}" />
+                                    <lightning:input name="input3" label="Type text for search" placeholder="type here..."/>
                                 </div>
                                 <div class="search_button">
-                                        <lightning:button variant="brand" disabled = "{!empty(v.searchKeywork)}" label="Search" title="Search" onclick="{! c.searchRecords}"/>
-                                        <lightning:button variant="brand" disabled = "{!empty(v.searchKeywork)}" label="Add Selected Records" title="Add Selected Records" onclick="{! c.handleClick }" />
+                                        <lightning:button variant="brand" label="Add Selected records" title="Add Selected records" onclick="{! c.handleClick }" />
                                 </div>
                             </div>
                             <div class="content_container_datatable">
