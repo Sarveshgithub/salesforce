@@ -97,9 +97,32 @@
     capitalizeFirstLetter: function (cmp, event, str) {
         return str[0].toUpperCase() + str.slice(1);
     },
+    //This part is used for search the records and add into related list
+    searchRecords: function (cmp, evt, help, searchKeyword) {
+        console.log('sfsdfsdfs');
+        let methodName = 'c.searchRecords_cntrl',
+            cols = [],
+            rows = [],
+            isRelLst = cmp.get('v.isRelatedList') != undefined || cmp.get('v.isRelatedList') != null || cmp.get('v.isRelatedList') != '' ? true : false,
+            params = {
+                'objectAPIName': cmp.get('v.objectName'),
+                'lstFields': cmp.get('v.lstfields'),
+                'isRelatedList': isRelLst,
+                'RelatedListFieldAPI': cmp.get('v.RelatedListFieldAPI'),
+                'recID': cmp.get('v.recordId'),
+                'searchKeyword': searchKeyword
+            },
+            callbackRess = (response) => {
+                if (response) {
+                    let data = JSON.parse(response);
+                    console.log('data',data);
+                }
+            }
+            console.log(params)
+        this.callApexMethod(cmp, methodName, params, callbackRess);
+    },
     // This function is for calling Apex method and return results
     callApexMethod: function (cmp, methodName, params, callbackRess) {
-
         let state, action;
         action = cmp.get(methodName);
         action.setParams(params);
@@ -233,5 +256,5 @@
             cmp.set('v.totalPages', parseInt(totalPage) + 1);
         }
 
-    },
+    }
 })
