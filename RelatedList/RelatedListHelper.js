@@ -17,18 +17,17 @@
             callbackRess = (response) => {
                 if (response) {
                     cols = response.lstFields;
+                    let nonrelated = cols;
                     rows = response.lstSObject;
-                    nonrelatedcols = this.addColumnNonRelated(cmp, event, help, cols);
-                    //console.log('cols-->',cols);
-                    //console.log('rows--->',rows);
+                    nonrelatedcols = this.addColumnNonRelated(cmp, evt, help);
                     rows = this.addRowAttribute(cmp, event, help, rows, cols, response.baseURL);
                     cols = this.addColumnAttribute(cmp, event, help, cols);
-                    cmp.set('v.NonRelatedCols',nonrelatedcols);
+                    cmp.set('v.NonRelatedCols', nonrelatedcols);
                     if (cmp.get('v.isRowAction'))
                         cols.push({ type: 'action', typeAttributes: { rowActions: this.rowAction(cmp, evt, help) } });
                     cmp.set('v.columns', cols);
                     cmp.set('v.Alldata', rows);
-                   // debugger;
+                    // debugger;
                     // pagination 
                     this.countTotalPages(cmp, evt);
                     this.addData(cmp, evt, 0, cmp.get('v.pageSize'));
@@ -51,11 +50,16 @@
         });
         return cols;
     },
-    addColumnNonRelated: function(cmp,event,help,cols){
-        return cols.map(col=>{
-            col['type'] = col['type'].toLowerCase();
-            col['type'] == 'double' ? col['type'] = 'number' : '';
+    addColumnNonRelated: function (cmp, evt, help) {
+        let cols = cmp.get('v.lstfields').split(','), nonrelated = [];
+        cols.map(col => {
+            let obj = {}
+            obj['fieldName'] = col;
+            obj['label'] = col;
+            obj['type'] = 'text';
+            nonrelated.push(obj)
         });
+        return nonrelated;
     },
     addRowAttribute: function (cmp, event, help, rows, cols, baseUrl) {
         rows.map(row => {
@@ -69,7 +73,6 @@
 
                 if (cols[i].isRef == true) {
                     fldName = cols[i].lkupRelName;
-                    //console.log(' -->',fldName);
                 }
                 if (fldName.includes('.') && cols[i].isRef) {
 
@@ -91,11 +94,9 @@
                     let temp = [], value = row;
                     temp = fldName.split('.');
                     value = value[this.capitalizeFirstLetter(cmp, event, temp[0])];
-                    //console.log('value-->',value,'field-->',this.capitalizeFirstLetter(cmp, event, temp[0]));
                     if (value != undefined && value != null && value != '') {
                         value = value[this.capitalizeFirstLetter(cmp, event, temp[1])];
                         row[fldName] = value;
-                        //console.log('value-->',value,'field-->',this.capitalizeFirstLetter(cmp, event, temp[1]));
                     }
 
                 }
@@ -109,7 +110,6 @@
     },
     //This part is used for search the records and add into related list
     searchRecords: function (cmp, evt, help, searchKeyword) {
-        console.log('sfsdfsdfs');
         let methodName = 'c.searchRecords_cntrl',
             isRelLst = cmp.get('v.isRelatedList') != undefined || cmp.get('v.isRelatedList') != null || cmp.get('v.isRelatedList') != '' ? true : false,
             params = {
@@ -122,13 +122,23 @@
             },
             callbackRess = (response) => {
                 if (response) {
-                    let data = JSON.parse(response);
-                    cmp.set('v.NonRelateddata',data);
-                    console.log('data', data);
+                    let data = JSON.parse(response)[0];
+                    cmp.set('v.NonRelateddata', data);
+                    data.length > 0 ? this.showspinner(cmp, evt, 'norec', false) : this.showspinner(cmp, evt, 'norec', true);
+                    this.showspinner(cmp, evt, 'spinner', false);
                 }
             }
-        console.log(params)
         this.callApexMethod(cmp, methodName, params, callbackRess);
+    },
+    showspinner: function (cmp, evt, auraid, show) {
+        let cmpTarget = cmp.find(auraid);
+        if (show) {
+            $A.util.removeClass(cmpTarget, 'slds-hide');
+            $A.util.addClass(cmpTarget, 'slds-show');
+        } else {
+            $A.util.removeClass(cmpTarget, 'slds-show');
+            $A.util.addClass(cmpTarget, 'slds-hide');
+        }
     },
     // This function is for calling Apex method and return results
     callApexMethod: function (cmp, methodName, params, callbackRess) {

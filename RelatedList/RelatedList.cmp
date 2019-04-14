@@ -30,8 +30,9 @@
     <!-- Add Records Attributes -->
     <aura:attribute name="showModal" type="Boolean" default="false" />
     <aura:attribute name="searchKeywork" type="String" />
-    <aura:attribute name="NonRelateddata" type="Object" default="{}"/>
+    <aura:attribute name="NonRelateddata" type="Object" />
     <aura:attribute name="NonRelatedCols" type="List" />
+    <aura:attribute name="selectedIds" type="List" />
     <!-- end Attributes -->
     <aura:attribute name="errors" type="Object" default="[]" />
     <aura:attribute name="draftValues" type="Object" default="[]" />
@@ -74,29 +75,36 @@
                 aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
                 <div class="slds-modal__container">
                     <header class="slds-modal__header">
-                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Modal Header</h2>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add More Records</h2>
                     </header>
-                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-
+                    <div class="slds-modal__content slds-p-around_medium" style="position: relative;"
+                        id="modal-content-id-1">
+                        <lightning:spinner aura:id="spinner" class="slds-hide" alternativeText="Loading" size="small" />
                         <div class="content_container">
                             <div class="content_container_header">
                                 <div class="search_input">
-                                    <lightning:input name="search" label="Search" placeholder="Search" onchange="{!c.getText}" />
+                                    <lightning:input name="search" label="Search" placeholder="Search"
+                                        onchange="{!c.getText}" />
                                 </div>
                                 <div class="search_button">
-                                        <lightning:button variant="brand" disabled = "{!empty(v.searchKeywork)}" label="Search" title="Search" onclick="{! c.searchRecords}"/>
-                                        <lightning:button variant="brand" disabled = "{!empty(v.searchKeywork)}" label="Add Selected Records" title="Add Selected Records" onclick="{! c.handleClick }" />
+                                    <lightning:button variant="brand" disabled="{!empty(v.searchKeywork)}"
+                                        label="Search" title="Search" onclick="{! c.searchRecords}" />
+                                    <lightning:button variant="brand" disabled="{!empty(v.selectedIds)}"
+                                        label="Add Selected Records" title="Add Selected Records"
+                                        onclick="{! c.addRelatedRecord }" />
                                 </div>
                             </div>
                             <div class="content_container_datatable">
-
+                                <span aura:id="norec" class="slds-hide">No Record Found!!</span>
+                                <aura:if isTrue="{!v.NonRelateddata.length > 0}">
+                                    <lightning:datatable data="{! v.NonRelateddata }" columns="{! v.NonRelatedCols }"
+                                        onrowselection="{! c.getSelectedName }" keyField="id" />
+                                </aura:if>
                             </div>
                         </div>
-                        <!-- <lightning:datatable data="{! v.NonRelateddata }" columns="{! v.NonRelatedCols }" keyField="Id"/> -->
                     </div>
                     <footer class="slds-modal__footer">
                         <button class="slds-button slds-button_neutral" onclick="{!c.openModalClose}">Cancel</button>
-                        <button class="slds-button slds-button_brand">Save</button>
                     </footer>
                 </div>
             </section>

@@ -50,6 +50,9 @@
     },
     openModalClose: function (cmp, evt, helper) {
         cmp.set('v.showModal', !cmp.get('v.showModal'));
+        cmp.set('v.searchKeywork', '');
+        cmp.set('v.selectedIds', []);
+        cmp.set('v.NonRelateddata', null);
     },
     getText: function (cmp, evt, event, help) {
         let element = evt.getSource(), inputValue = element.get("v.value");
@@ -62,7 +65,44 @@
         // help.searchRecords(cmp, evt, help, inputValue);
     },
     searchRecords: function (cmp, evt, help) {
+        help.showspinner(cmp, evt, 'spinner', true);
         let searchKeyword = cmp.get('v.searchKeywork');
         help.searchRecords(cmp, evt, help, searchKeyword);
+    },
+    getSelectedName: function (cmp, evt) {
+        let selectedRows = evt.getParam('selectedRows'), selectedId = [];
+        // Display that fieldName of the selected rows
+        for (var i = 0; i < selectedRows.length; i++) {
+            selectedId.push(selectedRows[i].Id)
+        }
+        cmp.set('v.selectedIds', selectedId);
+    },
+    addRelatedRecord: function (cmp, evt, help) {
+        help.showspinner(cmp, evt, 'spinner', true);
+        let arrofRecs = [], Ids = cmp.get('v.selectedIds'), objName = cmp.get('v.objectName'),
+            relatedApiName = cmp.get('v.RelatedListFieldAPI'), recID = cmp.get('v.recordId');
+        Ids.map(val => {
+            let obj = {};
+            obj['attributes'] = { 'type': objName };
+            obj[relatedApiName] = recID;
+            obj['Id'] = val;
+            arrofRecs.push(obj);
+        })
+        let methodName = 'c.updateRecord',
+            params = {
+                'records': arrofRecs
+            },
+            callbackRess = (response) => {
+                if (response == 'Done') {
+                    help.showToast('Successfully Added!', `${arrofRecs.length} has been added`, 'success');
+                    cmp.set('v.searchKeywork', '');
+                    cmp.set('v.selectedIds', []);
+                    cmp.set('v.showModal', false);
+                    cmp.set('v.NonRelateddata', null);
+                    $A.get('e.force:refreshView').fire();
+                    help.showspinner(cmp, evt, 'spinner', false);
+                }
+            }
+        help.callApexMethod(cmp, methodName, params, callbackRess);
     }
 })
