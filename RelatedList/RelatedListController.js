@@ -50,5 +50,19 @@
     },
     openModalClose: function (cmp, evt, helper) {
         cmp.set('v.showModal', !cmp.get('v.showModal'));
+    },
+    getText: function (cmp, evt, event, help) {
+        let element = evt.getSource(), inputValue = element.get("v.value");
+        if (inputValue.length > 1) {
+            cmp.set('v.searchKeywork', inputValue);
+        }
+        else {
+            cmp.set('v.searchKeywork', '');
+        }
+        // help.searchRecords(cmp, evt, help, inputValue);
+    },
+    searchRecords: function (cmp, evt, help) {
+        let searchKeyword = cmp.get('v.searchKeywork');
+        help.searchRecords(cmp, evt, help, searchKeyword);
     }
 })

@@ -29,6 +29,9 @@
     <!-- for edit -->
     <!-- Add Records Attributes -->
     <aura:attribute name="showModal" type="Boolean" default="false" />
+    <aura:attribute name="searchKeywork" type="String" />
+    <aura:attribute name="NonRelateddata" type="Object" default="{}"/>
+    <aura:attribute name="NonRelatedCols" type="List" />
     <!-- end Attributes -->
     <aura:attribute name="errors" type="Object" default="[]" />
     <aura:attribute name="draftValues" type="Object" default="[]" />
@@ -78,20 +81,18 @@
                         <div class="content_container">
                             <div class="content_container_header">
                                 <div class="search_input">
-                                    <lightning:input name="input3" label="Type text for search" placeholder="type here..."/>
+                                    <lightning:input name="search" label="Search" placeholder="Search" onchange="{!c.getText}" />
                                 </div>
                                 <div class="search_button">
-                                        <lightning:button variant="brand" label="Add Selected records" title="Add Selected records" onclick="{! c.handleClick }" />
+                                        <lightning:button variant="brand" disabled = "{!empty(v.searchKeywork)}" label="Search" title="Search" onclick="{! c.searchRecords}"/>
+                                        <lightning:button variant="brand" disabled = "{!empty(v.searchKeywork)}" label="Add Selected Records" title="Add Selected Records" onclick="{! c.handleClick }" />
                                 </div>
                             </div>
                             <div class="content_container_datatable">
 
                             </div>
                         </div>
-                        <lightning:datatable data="{! v.data }" columns="{! v.columns }" keyField="Id"
-                            sortedBy="{! v.sortedBy }" sortedDirection="{! v.sortedDirection }"
-                            onsort="{! c.updateColumnSorting }" hideCheckboxColumn="true"
-                            onrowaction="{! c.handleRowAction }" />
+                        <!-- <lightning:datatable data="{! v.NonRelateddata }" columns="{! v.NonRelatedCols }" keyField="Id"/> -->
                     </div>
                     <footer class="slds-modal__footer">
                         <button class="slds-button slds-button_neutral" onclick="{!c.openModalClose}">Cancel</button>

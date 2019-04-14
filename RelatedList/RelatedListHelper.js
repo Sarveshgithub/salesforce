@@ -4,6 +4,7 @@
         let methodName = 'c.loadData',
             cols = [],
             rows = [],
+            nonrelatedcols = [],
             isRelLst = cmp.get('v.isRelatedList') != undefined || cmp.get('v.isRelatedList') != null || cmp.get('v.isRelatedList') != '' ? true : false,
             params = {
                 'objectAPIName': cmp.get('v.objectName'),
@@ -17,14 +18,17 @@
                 if (response) {
                     cols = response.lstFields;
                     rows = response.lstSObject;
+                    nonrelatedcols = this.addColumnNonRelated(cmp, event, help, cols);
                     //console.log('cols-->',cols);
                     //console.log('rows--->',rows);
                     rows = this.addRowAttribute(cmp, event, help, rows, cols, response.baseURL);
                     cols = this.addColumnAttribute(cmp, event, help, cols);
+                    cmp.set('v.NonRelatedCols',nonrelatedcols);
                     if (cmp.get('v.isRowAction'))
                         cols.push({ type: 'action', typeAttributes: { rowActions: this.rowAction(cmp, evt, help) } });
                     cmp.set('v.columns', cols);
                     cmp.set('v.Alldata', rows);
+                   // debugger;
                     // pagination 
                     this.countTotalPages(cmp, evt);
                     this.addData(cmp, evt, 0, cmp.get('v.pageSize'));
@@ -46,6 +50,12 @@
             col['type'] == 'double' ? col['type'] = 'number' : '';
         });
         return cols;
+    },
+    addColumnNonRelated: function(cmp,event,help,cols){
+        return cols.map(col=>{
+            col['type'] = col['type'].toLowerCase();
+            col['type'] == 'double' ? col['type'] = 'number' : '';
+        });
     },
     addRowAttribute: function (cmp, event, help, rows, cols, baseUrl) {
         rows.map(row => {
@@ -97,9 +107,31 @@
     capitalizeFirstLetter: function (cmp, event, str) {
         return str[0].toUpperCase() + str.slice(1);
     },
+    //This part is used for search the records and add into related list
+    searchRecords: function (cmp, evt, help, searchKeyword) {
+        console.log('sfsdfsdfs');
+        let methodName = 'c.searchRecords_cntrl',
+            isRelLst = cmp.get('v.isRelatedList') != undefined || cmp.get('v.isRelatedList') != null || cmp.get('v.isRelatedList') != '' ? true : false,
+            params = {
+                'objectAPIName': cmp.get('v.objectName'),
+                'lstFields': cmp.get('v.lstfields'),
+                'isRelatedList': isRelLst,
+                'RelatedListFieldAPI': cmp.get('v.RelatedListFieldAPI'),
+                'recID': cmp.get('v.recordId'),
+                'searchKeyword': searchKeyword
+            },
+            callbackRess = (response) => {
+                if (response) {
+                    let data = JSON.parse(response);
+                    cmp.set('v.NonRelateddata',data);
+                    console.log('data', data);
+                }
+            }
+        console.log(params)
+        this.callApexMethod(cmp, methodName, params, callbackRess);
+    },
     // This function is for calling Apex method and return results
     callApexMethod: function (cmp, methodName, params, callbackRess) {
-
         let state, action;
         action = cmp.get(methodName);
         action.setParams(params);
@@ -233,5 +265,5 @@
             cmp.set('v.totalPages', parseInt(totalPage) + 1);
         }
 
-    },
+    }
 })
