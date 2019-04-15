@@ -25,12 +25,18 @@ public with sharing class cntrl_MultiLevelFields
         public string fieldDataType;
         @AuraEnabled
         public List<Options> lstOption;// case for picklist
-        public FieldWrapper(string fieldApiName, string fieldLabel, string fieldDataType, List<Options> lstOption)
+        @AuraEnabled
+        public string auraid;
+        @AuraEnabled
+        public string value;
+        public FieldWrapper(string fieldApiName, string fieldLabel, string fieldDataType, List<Options> lstOption,String auraid, String value)
         {
             this.fieldApiName = fieldApiName;
             this.fieldLabel = fieldLabel;
             this.fieldDataType = fieldDataType;
             this.lstOption = lstOption;
+            this.auraid = auraid;
+            this.value = value;
         }
     }
 	@AuraEnabled
@@ -47,7 +53,6 @@ public with sharing class cntrl_MultiLevelFields
         for(string field: lstFields)
         {
             //check if field contains 
-            try{
                 if(d.fields.getMap().containsKey(field))
                 {	lstOptions = new List<Options>();
                     fieldType = String.valueOf(d.fields.getMap().get(field).getDescribe().getType());
@@ -59,15 +64,11 @@ public with sharing class cntrl_MultiLevelFields
                     if(fieldType == 'PICKLIST'){
                         lstOptions = picklist_values(objectName,fieldAPI);
                     }
-                    lstFieldWrapper.add(new FieldWrapper(fieldAPI,fieldLabel,fieldType,lstOptions));
+                    lstFieldWrapper.add(new FieldWrapper(fieldAPI,fieldLabel,fieldType,lstOptions,fieldAPI,''));
                 }
                 else{
-                    throw new  ErrorException('Please check field API Names of '+field);
+                    throw new AuraHandledException('Please check field API Names of '+field);
                 }
-            }
-            catch(Exception e){
-                System.debug('e:'+e.getMessage());
-            }
         }
         System.debug('lstFieldWrapper'+lstFieldWrapper);
         return lstFieldWrapper;
