@@ -1,0 +1,9 @@
+.THIS .container_multilevel{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 10px;
+}
+.THIS .container_multilevel > *{
+    padding: 10px;
+}

@@ -1,0 +1,10 @@
+<aura:component controller="cntrl_MultiLevelFields"
+    implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+    access="global">
+    <aura:attribute type="Aura.Component[]" name="firstPanel" />
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    <div class="container_multilevel">
+        {!v.body}
+    </div>
+    {!v.firstPanel}
+</aura:component>
