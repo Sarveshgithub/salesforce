@@ -34,13 +34,13 @@ public  class cntrl_Datatable {
         public String invalidField;
         
         public wrapFields(String fieldName,
-                         String label,
-                         String type,
-                         Boolean isRef,
-                         String lkupRelAPI,
-                         String lkupRelName,
-                         String invalidField
-                        )
+                          String label,
+                          String type,
+                          Boolean isRef,
+                          String lkupRelAPI,
+                          String lkupRelName,
+                          String invalidField
+                         )
         {
             this.fieldName = fieldName;
             this.label = label;
@@ -62,7 +62,7 @@ public  class cntrl_Datatable {
         }
     }
     
-  
+    
     @AuraEnabled
     public static ResultWrapper loadData(String objectAPIName, String lstFields, String filterCriteria, Boolean isRelatedList, String RelatedListFieldAPI, String recID) {
         
@@ -75,11 +75,11 @@ public  class cntrl_Datatable {
         }
         map<String, String> customlabel = new map<String, String>();
         String[] flds = lstFields.split(',');
-      	wrapFields[] lstWrapfields = getFldMap(flds, objectAPIName);
-          
+        wrapFields[] lstWrapfields = getFldMap(flds, objectAPIName);
+        
         String[] RelFields = new String[]{};
-           
-        String strQuery = '';
+            
+            String strQuery = '';
         set<String> uniqueFields = new set<String>();
         for(wrapFields fld : lstWrapfields){
             uniqueFields.add(fld.fieldName.toLowerCase());
@@ -113,27 +113,58 @@ public  class cntrl_Datatable {
         Map<String, Schema.SObjectField> rootFldMap = rootObj.fields.getMap();
         String strInvalidField = '';
         wrapFields[] fldMap = new wrapFields[]{};
-        
-        
-        for(String key1 : flds) {
-            String customLabel = key1.substringBetween('(',')');
-            String key = key1.substringBefore('(').toLowerCase();
-            key = rootFldMap.containsKey(key) ? rootFldMap.get(key).getDescribe().getName() : key; 
-            String[] tempArry = key.split('\\.');
             
-            if(tempArry.size() > 1) {
-                Integer lstSize = tempArry.size();
-                String finalFld = tempArry[lstSize-1].toLowerCase(); 
+            
+            for(String key1 : flds) {
+                String customLabel = key1.substringBetween('(',')');
+                String key = key1.substringBefore('(').toLowerCase();
+                key = rootFldMap.containsKey(key) ? rootFldMap.get(key).getDescribe().getName() : key; 
+                String[] tempArry = key.split('\\.');
                 
-                Schema.Describesobjectresult finalObj;
-                Schema.DescribeFieldResult finalFldRes;
-                
-                String[] actLabelArry = new String[]{};
-                    String actLabel = '';
-                
-                if(lstSize > 2) {
-                    for(Integer i=0;i<=lstSize-2;i++) {
-                        String tempFld = tempArry[i].toLowerCase();
+                if(tempArry.size() > 1) {
+                    Integer lstSize = tempArry.size();
+                    String finalFld = tempArry[lstSize-1].toLowerCase(); 
+                    
+                    Schema.Describesobjectresult finalObj;
+                    Schema.DescribeFieldResult finalFldRes;
+                    
+                    String[] actLabelArry = new String[]{};
+                        String actLabel = '';
+                    
+                    if(lstSize > 2) {
+                        for(Integer i=0;i<=lstSize-2;i++) {
+                            String tempFld = tempArry[i].toLowerCase();
+                            
+                            if(tempFld.endsWith('__r')) {
+                                tempFld = tempFld.removeEnd('__r') + '__c';
+                            }
+                            else {
+                                tempFld += 'Id';
+                            }
+                            
+                            strInvalidField = tempFld;
+                            if(rootFldMap.containsKey(tempFld) || finalObj.fields.getMap().containsKey(tempFld)) {
+                                strInvalidField = '';
+                                if(i == 0) {
+                                    Schema.DescribeFieldResult dfr = rootFldMap.get(tempFld).getDescribe();
+                                    Schema.sObjectType[] refs = dfr.getReferenceTo();
+                                    
+                                    finalObj = refs[0].getDescribe();
+                                    actLabelArry.add(dfr.getLabel());
+                                }
+                                else {
+                                    Schema.DescribeFieldResult dfr = finalObj.fields.getMap().get(tempFld).getDescribe();
+                                    Schema.sObjectType[] refs = dfr.getReferenceTo();
+                                    
+                                    finalObj = refs[0].getDescribe();
+                                    actLabelArry.add(dfr.getLabel());
+                                }
+                            }
+                        }
+                        actLabel = String.join(actLabelArry,' > ');
+                    }
+                    else {
+                        String tempFld = tempArry[0].toLowerCase();
                         
                         if(tempFld.endsWith('__r')) {
                             tempFld = tempFld.removeEnd('__r') + '__c';
@@ -141,93 +172,62 @@ public  class cntrl_Datatable {
                         else {
                             tempFld += 'Id';
                         }
-                        
                         strInvalidField = tempFld;
-                        if(rootFldMap.containsKey(tempFld) || finalObj.fields.getMap().containsKey(tempFld)) {
+                        if(rootFldMap.containsKey(tempFld)) {
                             strInvalidField = '';
-                            if(i == 0) {
-                                Schema.DescribeFieldResult dfr = rootFldMap.get(tempFld).getDescribe();
-                                Schema.sObjectType[] refs = dfr.getReferenceTo();
-                                
-                                finalObj = refs[0].getDescribe();
-                                actLabelArry.add(dfr.getLabel());
-                            }
-                            else {
-                                Schema.DescribeFieldResult dfr = finalObj.fields.getMap().get(tempFld).getDescribe();
-                                Schema.sObjectType[] refs = dfr.getReferenceTo();
-                                
-                                finalObj = refs[0].getDescribe();
-                                actLabelArry.add(dfr.getLabel());
-                            }
+                            Schema.DescribeFieldResult dfr = rootFldMap.get(tempFld).getDescribe();
+                            Schema.sObjectType[] refs = dfr.getReferenceTo();
+                            
+                            finalObj = refs[0].getDescribe();
                         }
                     }
-                    actLabel = String.join(actLabelArry,' > ');
-                }
-                else {
-                    String tempFld = tempArry[0].toLowerCase();
                     
-                    if(tempFld.endsWith('__r')) {
-                        tempFld = tempFld.removeEnd('__r') + '__c';
+                    Map<String, Schema.SObjectField> fieldMapTemp = finalObj.fields.getMap();
+                    
+                    strInvalidField = finalFld;
+                    if(fieldMapTemp.containsKey(finalFld)) {
+                        strInvalidField = '';
+                        Schema.DescribeFieldResult dfrTemp = fieldMapTemp.get(finalFld).getDescribe();
+                        
+                        actLabel += ((actLabel != '')?('.' + dfrTemp.getLabel()):(dfrTemp.getLabel()));
+                        
+                        String fldType = String.valueOf(dfrTemp.getType());
+                        if(String.isNotBlank(customLabel)){
+                            actLabel = customLabel;
+                        }
+                        fldMap.add(createFldMap(key, actLabel, dfrTemp,strInvalidField));
                     }
                     else {
-                        tempFld += 'Id';
-                    }
-                    strInvalidField = tempFld;
-                    if(rootFldMap.containsKey(tempFld)) {
-                        strInvalidField = '';
-                        Schema.DescribeFieldResult dfr = rootFldMap.get(tempFld).getDescribe();
-                        Schema.sObjectType[] refs = dfr.getReferenceTo();
-                        
-                        finalObj = refs[0].getDescribe();
-                    }
-                }
-                
-                Map<String, Schema.SObjectField> fieldMapTemp = finalObj.fields.getMap();
-                
-                strInvalidField = finalFld;
-                if(fieldMapTemp.containsKey(finalFld)) {
-                    strInvalidField = '';
-                    Schema.DescribeFieldResult dfrTemp = fieldMapTemp.get(finalFld).getDescribe();
-                    
-                    actLabel += ((actLabel != '')?('.' + dfrTemp.getLabel()):(dfrTemp.getLabel()));
-                    
-                    String fldType = String.valueOf(dfrTemp.getType());
-                    if(String.isNotBlank(customLabel)){
-                        actLabel = customLabel;
-                    }
-                    fldMap.add(createFldMap(key, actLabel, dfrTemp,strInvalidField));
-                }
-                else {
-                    String strlabel = '';
-                    if(String.isNotBlank(customLabel)){
-                        strlabel = customLabel;
-                    }
-                    fldMap.add(createFldMap(key,strlabel,null,strInvalidField)); 
-                }
-            }
-            else {
-                strInvalidField = key;
-                if(rootFldMap.containsKey(key)) {
-                    Schema.DescribeFieldResult dfr = rootFldMap.get(key).getDescribe();
-                    // field level access permission
-                    if(dfr.isAccessible()) {
-                        strInvalidField = '';
-                        String strlabel = dfr.getLabel();
+                        String strlabel = '';
                         if(String.isNotBlank(customLabel)){
                             strlabel = customLabel;
                         }
-                        fldMap.add(createFldMap(key,strlabel,dfr,strInvalidField));
+                        fldMap.add(createFldMap(key,strlabel,null,strInvalidField)); 
                     }
                 }
                 else {
-                    String strlabel = '';
-                    if(String.isNotBlank(customLabel)){
-                        strlabel = customLabel;
+                    strInvalidField = key;
+                    if(rootFldMap.containsKey(key)) {
+                        Schema.DescribeFieldResult dfr = rootFldMap.get(key).getDescribe();
+                        // field level access permission
+                        if(dfr.isAccessible()) {
+                            strInvalidField = '';
+                            String strlabel = dfr.getLabel();
+                            if(String.isNotBlank(customLabel)){
+                                strlabel = customLabel;
+                            }
+                            fldMap.add(createFldMap(key,strlabel,dfr,strInvalidField));
+                        }
                     }
-                    fldMap.add(createFldMap(key,strlabel,null,strInvalidField)); 
+                    else {
+                        String strlabel = '';
+                        if(String.isNotBlank(customLabel)){
+                            strlabel = customLabel;
+                        }
+                        fldMap.add(createFldMap(key,strlabel,null,strInvalidField)); 
+                    }
                 }
             }
-        }
         return fldMap;
     }
     
@@ -279,7 +279,7 @@ public  class cntrl_Datatable {
             return new wrapFields(apiName,'','',false,'','',strInvalidField);            
         }
     }
-
+    
     @AuraEnabled
     public static String searchRecords_cntrl(String objectAPIName,String lstFields,String RelatedListFieldAPI,Boolean isRelatedList,String recID,String searchKeyword){
         String SPACE = ' ';
@@ -289,7 +289,17 @@ public  class cntrl_Datatable {
         SOQL ='FIND'+SPACE+str_keywork+SPACE+'IN ALL FIELDS RETURNING'+SPACE+objectAPIName+SPACE+'('+SPACE+lstFields+SPACE+WhereCOndition+')'; 
         System.debug('SOQL' +SOQL);
         List<List<SObject>> searchList = search.query(SOQL);
-        System.debug('searchList' +searchList);
         return JSON.serialize(searchList);
+    }
+    @AuraEnabled
+    public static String updateRecord(List<Map<String, Object>> records){
+        List<SObject> lst = (List<SObject>) JSON.deserialize(JSON.serialize(records), List<SObject>.class);
+        try{
+            update lst;
+        }
+        catch(Exception e){
+            throw new AuraHandledException('Update Fail!: '+ e.getMessage());
+        }
+        return 'Done';
     }
 }
