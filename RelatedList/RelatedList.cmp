@@ -10,64 +10,24 @@
     <aura:attribute name="pageSize" type="Integer" default="10" />
     <aura:attribute name="RelatedListFieldAPI" type="String" />
     <aura:attribute name="isRowAction" type="Boolean" default="true" />
+    <!-- Secoundry Object related List -->
+    <aura:attribute name="sec_objectName" type="string" />
+    <aura:attribute name="sec_titleIcon" type="string" default="action:add_contact" />
+    <aura:attribute name="sec_lstfields" type="string" />
+    <aura:attribute name="sec_FilterCriteria" type="string" />
+    <aura:attribute name="sec_title" type="string" />
+    <aura:attribute name="sec_RelatedListFieldAPI" type="String" />
+    <aura:attribute name="pri_RelatedListFieldAPI" type="String" />
+    <aura:attribute name="rel_objectName" type="String" />
     <!--End of Design the Atrributes  -->
-
-    <!-- All the Atrributes  -->
-    <aura:attribute name="data" type="Object" />
-    <aura:attribute name="hideNewbtn" type="Boolean" default="false" />
-    <aura:attribute name="Alldata" type="List" />
-    <aura:attribute name="columns" type="List" />
-    <aura:attribute name="keyField" type="String" default="id" />
-    <aura:attribute name="isLoading" type="Boolean" default="false" />
-    <aura:attribute name="sortedBy" type="String" />
-    <aura:attribute name="sortedDirection" type="String" />
-    <aura:attribute name="start" type="Integer" default="0" />
-    <aura:attribute name="end" type="Integer" />
-    <aura:attribute name="currentPage" type="Integer" />
-    <aura:attribute name="totalPages" type="Integer" />
-    <aura:attribute name="isRelatedList" type="Boolean" default="false" />
-    <!-- for edit -->
+    <!-- for Modal edit -->
     <!-- Add Records Attributes -->
     <aura:attribute name="showModal" type="Boolean" default="false" />
-    <aura:attribute name="searchKeywork" type="String" />
-    <aura:attribute name="NonRelateddata" type="Object" />
-    <aura:attribute name="NonRelatedCols" type="List" />
-    <aura:attribute name="selectedIds" type="List" />
-    <!-- end Attributes -->
-    <aura:attribute name="errors" type="Object" default="[]" />
-    <aura:attribute name="draftValues" type="Object" default="[]" />
-    <!-- handlers-->
-    <aura:handler name="init" value="{! this }" action="{! c.init }" />
-    <aura:handler event="force:refreshView" action="{!c.init}" />
-    <!--<aura:handler event="force:showToast" action="{! c.handleReferesh}" /> -->
 
-    <lightning:card variant="Narrow" title="{!v.title}" iconName="{!v.titleIcon}">
-        <aura:set attribute="actions">
-            <div style="{!v.hideNewbtn ?'display:none' : ''}">
-                <lightning:button variant="neutral" label="Add Records" title="Add Records"
-                    onclick="{! c.openModalClose }" />
-                <lightning:button variant="neutral" label="New" title="New Record" onclick="{! c.newRecord }" />
-            </div>
-        </aura:set>
-        <lightning:datatable data="{! v.data }" columns="{! v.columns }" keyField="Id" sortedBy="{! v.sortedBy }"
-            sortedDirection="{! v.sortedDirection }" onsort="{! c.updateColumnSorting }" hideCheckboxColumn="true"
-            onrowaction="{! c.handleRowAction }" />
-
-        <aura:if isTrue="{! v.isLoading }">
-            <lightning:spinner alternativeText="Loading" />
-        </aura:if>
-        <div style="text-align: right; padding: 10px;">
-            {!v.currentPage} of {!v.totalPages} Pages
-            <lightning:button aura:id="First" variant="{!v.start == 0 ? 'Neutral' : 'brand'}" label="First"
-                onclick="{! c.pagination }" disabled="{!v.start == 0 ? true : false}" />
-            <lightning:button aura:id="Previous" variant="{!v.start == 0 ? 'Neutral' : 'brand'}" label="Previous"
-                onclick="{! c.pagination }" disabled="{!v.start == 0 ? true : false}" />
-            <lightning:button aura:id="Next" variant="{!v.currentPage == v.totalPages ? 'Neutral' : 'brand'}"
-                label="Next" onclick="{! c.pagination }" disabled="{!v.currentPage == v.totalPages ? true : false}" />
-            <lightning:button aura:id="Last" variant="{!v.currentPage == v.totalPages ? 'Neutral' : 'brand'}"
-                label="Last" onclick="{! c.pagination }" disabled="{!v.currentPage == v.totalPages ? true : false}" />
-        </div>
-    </lightning:card>
+    <c:RelatedList_Child objectName="{!v.objectName}" titleIcon="{!v.titleIcon}" lstfields="{!v.lstfields}"
+        FilterCriteria="{!v.FilterCriteria}" title="{!v.title}" pageSize="{!v.pageSize}"
+        RelatedListFieldAPI="{!v.RelatedListFieldAPI}" isRowAction="{!v.isRowAction}" showModal="{!v.showModal}"
+        hideCheckboxColumn="true" rel_objectName="{!v.rel_objectName}" />
     <!-- Modal popup for add records -->
     <aura:if isTrue="{!v.showModal}">
         <div class="demo-only" style="height: 640px;">
@@ -81,25 +41,12 @@
                         id="modal-content-id-1">
                         <lightning:spinner aura:id="spinner" class="slds-hide" alternativeText="Loading" size="small" />
                         <div class="content_container">
-                            <div class="content_container_header">
-                                <div class="search_input">
-                                    <lightning:input name="search" label="Search" placeholder="Search"
-                                        onchange="{!c.getText}" />
-                                </div>
-                                <div class="search_button">
-                                    <lightning:button variant="brand" disabled="{!empty(v.searchKeywork)}"
-                                        label="Search" title="Search" onclick="{! c.searchRecords}" />
-                                    <lightning:button variant="brand" disabled="{!empty(v.selectedIds)}"
-                                        label="Add Selected Records" title="Add Selected Records"
-                                        onclick="{! c.addRelatedRecord }" />
-                                </div>
-                            </div>
                             <div class="content_container_datatable">
-                                <span aura:id="norec" class="slds-hide">No Record Found!!</span>
-                                <aura:if isTrue="{!v.NonRelateddata.length > 0}">
-                                    <lightning:datatable data="{! v.NonRelateddata }" columns="{! v.NonRelatedCols }"
-                                        onrowselection="{! c.getSelectedName }" keyField="id" />
-                                </aura:if>
+                                <c:RelatedList_Child objectName="{!v.sec_objectName}" titleIcon="{!v.sec_titleIcon}"
+                                    lstfields="{!v.sec_lstfields}" FilterCriteria="{!v.sec_FilterCriteria}"
+                                    title="{!v.sec_title}" pageSize="{!v.pageSize}"
+                                    RelatedListFieldAPI="{!v.sec_RelatedListFieldAPI}" isRowAction="false"
+                                    hideCheckboxColumn="false" rel_objectName="{!v.rel_objectName}" />
                             </div>
                         </div>
                     </div>
