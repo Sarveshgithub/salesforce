@@ -2,17 +2,19 @@
     <design:attribute name="title" Label="Title" />
     <design:attribute name="titleIcon" label="Title Icon Name" />
     <design:attribute name="objectName" Label="Object API Name" />
-    <design:attribute name="lstfields" Label="Fields API Name"  />
-    <design:attribute name="FilterCriteria" Label="Filter condition"  />
-    <design:attribute name="isRowAction" Default="true" Label="Edit/Delete Action"/>
-    <design:attribute name="pageSize" Label="Page Size"  />
-    <design:attribute name="RelatedListFieldAPI" Label="RelatedList Field API"  description="Related lookup field Api Name ex AccountId for Contact"/>
+    <design:attribute name="lstfields" Label="Fields API Name" />
+    <design:attribute name="FilterCriteria" Label="Filter condition" />
+    <design:attribute name="isRowAction" Default="true" Label="Edit/Delete Action" />
+    <design:attribute name="pageSize" Label="Page Size" />
+    <design:attribute name="RelatedListFieldAPI" Label="RelatedList Field API"
+        description="Related lookup field Api Name ex AccountId for Contact" />
     <!-- secoundry -->
     <design:attribute name="sec_objectName" Label="Secoundry Object API Name" />
     <design:attribute name="sec_titleIcon" label="Secoundry Title Icon Name" />
     <design:attribute name="sec_lstfields" Label="Secoundry Fields API Name" />
-    <design:attribute name="sec_FilterCriteria" Label="Secoundry Filter condition"  />
-    <design:attribute name="sec_title" Label="Secoundry Title"  />
-    <design:attribute name="sec_RelatedListFieldAPI" Default="true" Label="Junction Related API Name(Refrence to Secoundry Object)"/>
-    <design:attribute name="rel_objectName" Default="true" Label="Junction Object"/>
+    <design:attribute name="sec_FilterCriteria" Label="Secoundry Filter condition" />
+    <design:attribute name="sec_title" Label="Secoundry Title" />
+    <design:attribute name="sec_JunctionField" Label="Junction API field name" />
+    <design:attribute name="isIU" Default="true" Label="Insert/Update child Record"
+        description="true from Insert false for Update" />
 </design:component>

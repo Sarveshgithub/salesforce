@@ -16,9 +16,9 @@
     <aura:attribute name="sec_lstfields" type="string" />
     <aura:attribute name="sec_FilterCriteria" type="string" />
     <aura:attribute name="sec_title" type="string" />
-    <aura:attribute name="sec_RelatedListFieldAPI" type="String" />
-    <aura:attribute name="pri_RelatedListFieldAPI" type="String" />
-    <aura:attribute name="rel_objectName" type="String" />
+    <aura:attribute name="sec_JunctionField" type="string" />
+    <aura:attribute name="isIU" type="Boolean" default="false" />
+    <aura:attribute name="recordId" type="Id" />
     <!--End of Design the Atrributes  -->
     <!-- for Modal edit -->
     <!-- Add Records Attributes -->
@@ -27,7 +27,8 @@
     <c:RelatedList_Child objectName="{!v.objectName}" titleIcon="{!v.titleIcon}" lstfields="{!v.lstfields}"
         FilterCriteria="{!v.FilterCriteria}" title="{!v.title}" pageSize="{!v.pageSize}"
         RelatedListFieldAPI="{!v.RelatedListFieldAPI}" isRowAction="{!v.isRowAction}" showModal="{!v.showModal}"
-        hideCheckboxColumn="true" rel_objectName="{!v.rel_objectName}" />
+        hideCheckboxColumn="true" pri_objectName="{!v.objectName}" pri_relatedField="{!v.RelatedListFieldAPI}"
+        isIU="{!v.isIU}" recordId="{!v.recordId}" sec_JunctionField="{!v.sec_JunctionField}"/>
     <!-- Modal popup for add records -->
     <aura:if isTrue="{!v.showModal}">
         <div class="demo-only" style="height: 640px;">
@@ -46,7 +47,10 @@
                                     lstfields="{!v.sec_lstfields}" FilterCriteria="{!v.sec_FilterCriteria}"
                                     title="{!v.sec_title}" pageSize="{!v.pageSize}"
                                     RelatedListFieldAPI="{!v.sec_RelatedListFieldAPI}" isRowAction="false"
-                                    hideCheckboxColumn="false" rel_objectName="{!v.rel_objectName}" />
+                                    hideCheckboxColumn="false" pri_objectName="{!v.objectName}"
+                                    pri_relatedField="{!v.RelatedListFieldAPI}" isIU="{!v.isIU}"
+                                    recordId="{!v.recordId}" sec_JunctionField="{!v.sec_JunctionField}"
+                                    showModal="{!v.showModal}"/>
                             </div>
                         </div>
                     </div>
