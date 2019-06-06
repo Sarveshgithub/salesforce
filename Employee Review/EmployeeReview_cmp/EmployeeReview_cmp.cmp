@@ -1,0 +1,43 @@
+<aura:component controller="EmployeeReview_cnrl"
+    implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+    access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="oUser" type="user" default="{'sobjectType' : 'User'}" />
+    <div class="slds-grid slds-gutters">
+        <div class="slds-col slds-size_1-of-6 centerButton">
+            <lightning:button label="Prev" iconName="utility:chevronleft" iconPosition="left" variant="brand" />
+        </div>
+        <div class="slds-col slds-size_4-of-6">
+            <div style="height: 15%" class="centerContent">
+                <h1 style="font-size: 2em;">
+                    Please Search the Project for Review
+                </h1>
+            </div>
+            <div style="height: 85%">
+                <div class="slds-grid slds-wrap" style="display: flex;">
+                    <aura:iteration items="1,2,3,4,5,6,7,8,9" var="item">
+                        <!-- one avator -->
+                        <div class="slds-col slds-size_1-of-4" style="padding-bottom: .75rem;">
+                            <div class="card" onclick="">
+                                <div>
+                                    <lightning:avatar variant="circle" src="{!v.oUser.SmallPhotoUrl}" 
+                                        fallbackIconName="standard:user"
+                                        class="slds-m-right_small" size="xx-large" />
+                                    <div>
+                                        <h4><b>Sarvesh Kumar</b></h4>
+                                        <p>Developer</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:iteration>
+                </div>
+            </div>
+        </div>
+        <div class="slds-col slds-size_1-of-6 centerButton">
+            <lightning:button label="Next" iconName="utility:chevronright" iconPosition="right" variant="brand" />
+        </div>
+    </div>
+
+
+</aura:component>

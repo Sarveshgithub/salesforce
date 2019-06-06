@@ -1,0 +1,38 @@
+.THIS {
+height:calc(100% + 1.5rem);
+margin:-.75rem;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+background: #ffffff;
+color: rgba(81, 79, 77,1);
+}
+
+.THIS .centerButton{
+margin: auto;
+text-align: center;
+}
+
+.THIS .centerContent{
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.THIS .card {
+display: flex;
+background:#dbf0fa;
+padding: 10px 10px 10px 25px;
+box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+transition: 0.3s;
+border-radius:5px; 
+}
+
+.THIS .card > div{
+display: flex;
+}
+
+.THIS .card:hover {
+box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+background: #0393D0;
+color: white;
+}
