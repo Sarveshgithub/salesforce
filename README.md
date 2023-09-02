@@ -8,8 +8,8 @@ Learn Lightning in Salesforce :https://www.youtube.com/watch?v=iOwl_6Db-J8&list=
 
 
 Follows :
-#Youtube : https://www.youtube.com/channel/UC4CI3iR9WpLUdc3DHF0n-1A?view_as=subscriber
+### Youtube: [sarvesh_k](https://www.youtube.com/channel/UC4CI3iR9WpLUdc3DHF0n-1A?view_as=subscriber)
 
-#facebook: https://www.facebook.com/codemarshal
+### Twitter: [sarvesh201](https://twitter.com/sarvesh201)
 
-#linkedin : https://www.linkedin.com/in/sarvesh-kumar
+### Linkedin : [sarvesh-kumar](https://www.linkedin.com/in/sarvesh-kumar)
