@@ -1,6 +1,6 @@
-# In this Repositary All the code related to Salesforce 
+# In this Repository All the code related to Salesforce from YouTube channel 
 
-Dynamic Data table is the generic component you can use any object detail page
+Dynamic Data table is the generic component you can use on any object detail page
 Follows all best practices and very fast response. 
 
 
