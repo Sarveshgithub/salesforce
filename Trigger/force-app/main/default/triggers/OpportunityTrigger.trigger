@@ -20,11 +20,4 @@ trigger OpportunityTrigger on Opportunity (before insert,before update, before d
             OpportunityTriggerHandler.afterDelete();
         }
     }
-
-    OpportunityTriggerHandler.afterInsert();
-    
-   
-    
-  
-    OpportunityTriggerHandler.afterUnDelete();
 }
