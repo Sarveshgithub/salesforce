@@ -1,15 +1,15 @@
-# In this Repository All the code related to Salesforce from YouTube channel 
+# In this Repository All the code related to Salesforce from YouTube channel
+Follows me :
+- Youtube: [sarvesh_k](https://www.youtube.com/channel/UC4CI3iR9WpLUdc3DHF0n-1A?view_as=subscriber)
+- Twitter: [sarvesh201](https://twitter.com/sarvesh201)
+- Linkedin : [sarvesh-kumar](https://www.linkedin.com/in/sarvesh-kumar)
 
-Dynamic Data table is the generic component you can use on any object detail page
-Follows all best practices and very fast response. 
+# Trigger In Salesforce
+[![Trigge in Salesforce](http://img.youtube.com/vi/a8aBk5zKias/0.jpg)](http://www.youtube.com/watch?v=a8aBk5zKias)
 
+[Source Code](https://github.com/Sarveshgithub/salesforce/tree/master/Trigger)
 
-Learn Lightning in Salesforce :https://www.youtube.com/watch?v=iOwl_6Db-J8&list=PLxTr1YJm0NPbk07FHvMWOhpRb2_TYcavp
+# CI/CD in Salesforce
+[![Trigge in Salesforce](http://img.youtube.com/vi/glE4g9Ibpbg/0.jpg)](http://www.youtube.com/watch?v=glE4g9Ibpbg)
 
-
-Follows :
-### Youtube: [sarvesh_k](https://www.youtube.com/channel/UC4CI3iR9WpLUdc3DHF0n-1A?view_as=subscriber)
-
-### Twitter: [sarvesh201](https://twitter.com/sarvesh201)
-
-### Linkedin : [sarvesh-kumar](https://www.linkedin.com/in/sarvesh-kumar)
+[Source Code](https://github.com/Sarveshgithub/sfdc-lwc-lightning-datatable)
