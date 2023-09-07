@@ -4,8 +4,13 @@ Follows me :
 - Twitter: [sarvesh201](https://twitter.com/sarvesh201)
 - Linkedin : [sarvesh-kumar](https://www.linkedin.com/in/sarvesh-kumar)
 
+# Salesforce Developer Roadmap
+[![Developer RoadMap](http://img.youtube.com/vi/vKDua0wxNss/0.jpg)](http://www.youtube.com/watch?v=vKDua0wxNss)
+
+[Document](https://excalidraw.com/#json=8g5YF8wg6wfRJr4WJW_K4,yHjUWdbxAtppy9zmn5wz8w)
+
 # Trigger In Salesforce
-[![Trigge in Salesforce](http://img.youtube.com/vi/a8aBk5zKias/0.jpg)](http://www.youtube.com/watch?v=a8aBk5zKias)
+[![Trigger in Salesforce](http://img.youtube.com/vi/a8aBk5zKias/0.jpg)](http://www.youtube.com/watch?v=a8aBk5zKias)
 
 [Source Code](https://github.com/Sarveshgithub/salesforce/tree/master/Trigger)
 
