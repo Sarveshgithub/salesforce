@@ -6,6 +6,12 @@ Follows me :
 - Twitter: [sarvesh201](https://twitter.com/sarvesh201)
 - Linkedin : [sarvesh-kumar](https://www.linkedin.com/in/sarvesh-kumar)
 
+# Open Source Developer Guide | Start open source contribution
+
+[![Open Source](http://img.youtube.com/vi/FtcLivu8NuE/0.jpg)](http://www.youtube.com/watch?v=FtcLivu8NuE)
+
+[Document](https://excalidraw.com/#json=8R-ypdNS3eoXhGcLrurLa,GYsaewCLwqScRoQNWEcy7Q)
+
 # Test Class in Apex | TDD Approach Test Class
 
 [![Test Class in Apex](http://img.youtube.com/vi/c0t38hAoh2g/0.jpg)](http://www.youtube.com/watch?v=c0t38hAoh2g)
