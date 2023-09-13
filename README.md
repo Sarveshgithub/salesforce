@@ -6,6 +6,12 @@ Follows me :
 - Twitter: [sarvesh201](https://twitter.com/sarvesh201)
 - Linkedin : [sarvesh-kumar](https://www.linkedin.com/in/sarvesh-kumar)
 
+# VS code setup for salesforce | How to setup vs code for salesforce ?
+
+[![VS code setup](http://img.youtube.com/vi/bKDw8khM/0.jpg)](http://www.youtube.com/watch?v=bKDw8khM)
+
+[Document](https://excalidraw.com/#json=eGsPLspuv8K4XOhoZCePc,LWueTUjRxX_uErsGvIu02g)
+
 # Open Source Developer Guide | Start open source contribution
 
 [![Open Source](http://img.youtube.com/vi/FtcLivu8NuE/0.jpg)](http://www.youtube.com/watch?v=FtcLivu8NuE)
