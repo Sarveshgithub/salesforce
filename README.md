@@ -6,9 +6,19 @@ Follows me :
 - Twitter: [sarvesh201](https://twitter.com/sarvesh201)
 - Linkedin : [sarvesh-kumar](https://www.linkedin.com/in/sarvesh-kumar)
 
+# Apex for Beginner | Class and Objects | Ep - 2
+
+[![Apex Beginner](http://img.youtube.com/vi/O1tSxyAq2UU/0.jpg)](http://www.youtube.com/watch?v=O1tSxyAq2UU)
+
+
+# Apex for Beginner | Variables in Apex | Ep -1
+
+[![Apex Beginner](http://img.youtube.com/vi/KNqcOanUVlE/0.jpg)](http://www.youtube.com/watch?v=KNqcOanUVlE)
+
+
 # VS code setup for salesforce | How to setup vs code for salesforce ?
 
-[![VS code setup](http://img.youtube.com/vi/bKDw8khM/0.jpg)](http://www.youtube.com/watch?v=bKDw8khM)
+[![VS code setup](http://img.youtube.com/vi/Tj-bKDw8khM/0.jpg)](http://www.youtube.com/watch?v=Tj-bKDw8khM)
 
 [Document](https://excalidraw.com/#json=eGsPLspuv8K4XOhoZCePc,LWueTUjRxX_uErsGvIu02g)
 
